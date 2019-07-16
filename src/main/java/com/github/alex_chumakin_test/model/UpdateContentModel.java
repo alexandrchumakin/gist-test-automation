@@ -18,6 +18,9 @@ public class UpdateContentModel {
     private String filename;
 
 
+    /*
+    Custom serializer that allows to write value for file as NULL value
+     */
     static class JsonStringSerializer extends StdSerializer<String> {
 
         JsonStringSerializer() {
