@@ -21,7 +21,7 @@ public abstract class AbstractTest {
 
     @AfterAll
     public static void tearDown() {
-        Optional.ofNullable(createdGists).orElse(new ArrayList<>()).forEach(gistId -> gistClient.removeGist(gistId));
+        createdGists.forEach(gistId -> gistClient.removeGist(gistId));
     }
 
 }

@@ -10,7 +10,7 @@ class AccessibilityTest extends AbstractTest {
     @Test
     void createGistWithWrongToken() {
         gistClient
-                .createGistUnauthorized()
+                .createGistWithWrongToken()
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
@@ -18,14 +18,23 @@ class AccessibilityTest extends AbstractTest {
     }
 
     @Test
-    void createGistWithAuthorizedUser() {
-        // gist can be created by authorized user without gist token in request
+    void createGistWithUnauthorizedUser() {
         gistClient
-                .createGistAuthorized()
+                .createGistUnauthorized()
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
-                .body("message", equalTo("Not Found"));
+                .statusCode(HttpStatus.SC_UNAUTHORIZED)
+                .body("message", equalTo("Requires authentication"));
+    }
+
+    @Test
+    void starGistWithoutAuthorization() {
+        var createdGist = gistClient.createGistWithToken(null);
+        createdGists.add(createdGist.getId());
+        gistClient.starGistUnauthorized(createdGist.getId())
+                  .then()
+                  .assertThat()
+                  .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
 }

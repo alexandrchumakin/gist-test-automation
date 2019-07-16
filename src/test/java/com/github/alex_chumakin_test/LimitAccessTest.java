@@ -14,14 +14,15 @@ class LimitAccessTest extends AbstractTest {
     private static Stream<Arguments> getGists() {
         return Stream.of(
                 Arguments.of("unauthorized call", gistClient.getGists(), gistClient.getGists()),
-                Arguments.of("authorized call", gistClient.getGistsAuthorized(), gistClient.getGistsAuthorized()));
+                Arguments.of("authorized call", gistClient.getGistsAuthorized(), gistClient.getGistsAuthorized())
+        );
     }
 
     @ParameterizedTest
     @MethodSource("getGists")
     void getGistsLimit(@SuppressWarnings("unused") String testName, Response initResponse, Response newResponse) {
-        int initLimit = Integer.parseInt(initResponse.getHeader(GistController.RATE_RAMAINING_LIMIT_HEADER));
-        int newLimit = Integer.parseInt(newResponse.getHeader(GistController.RATE_RAMAINING_LIMIT_HEADER));
+        int initLimit = Integer.parseInt(initResponse.getHeader(GistController.RATE_REMAINING_LIMIT_HEADER));
+        int newLimit = Integer.parseInt(newResponse.getHeader(GistController.RATE_REMAINING_LIMIT_HEADER));
         int maxLimit = Integer.parseInt(newResponse.getHeader(GistController.RATE_LIMIT_HEADER));
 
         SoftAssertions.assertSoftly(softly -> {

@@ -28,8 +28,8 @@ public class CustomResponseLoggingFilter implements Filter {
             logDetail = LogDetail.STATUS;
         }
 
-        if (response.getHeaders().hasHeaderWithName(GistController.RATE_RAMAINING_LIMIT_HEADER)) {
-            log.info(response.getHeaders().get(GistController.RATE_RAMAINING_LIMIT_HEADER).toString());
+        if (response.getHeaders().hasHeaderWithName(GistController.RATE_REMAINING_LIMIT_HEADER)) {
+            log.info(response.getHeaders().get(GistController.RATE_REMAINING_LIMIT_HEADER).toString());
         }
 
         ResponsePrinter.print(response, response, System.out, logDetail, true);

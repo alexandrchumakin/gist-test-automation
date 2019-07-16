@@ -28,7 +28,6 @@ class GetGistTest extends AbstractTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
-
     }
 
 }

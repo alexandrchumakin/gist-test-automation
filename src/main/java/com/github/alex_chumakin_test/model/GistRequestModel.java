@@ -8,11 +8,11 @@ import java.util.Map;
 
 @Data
 @Builder
-public class CreateGistRequest {
+public class GistRequestModel {
 
     private String description;
     @JsonProperty("public")
     private Boolean isPublic;
-    private Map<String, ContentModel> files;
+    private Map<Object, ContentModel> files;
 
 }

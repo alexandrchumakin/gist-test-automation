@@ -1,8 +1,13 @@
 package com.github.alex_chumakin_test.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.alex_chumakin_test.data.ConfigReader;
 import com.github.alex_chumakin_test.service.filters.CustomRequestLoggingFilter;
 import com.github.alex_chumakin_test.service.filters.CustomResponseLoggingFilter;
@@ -16,7 +21,11 @@ import io.restassured.specification.RequestSpecification;
 import lombok.Getter;
 import org.apache.http.HttpHeaders;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Optional;
 
 @Getter
 public class BaseService {
@@ -32,8 +41,8 @@ public class BaseService {
         prepareSpec();
     }
 
-    public BaseService authorize() {
-        reqSpec.header(HttpHeaders.AUTHORIZATION, configReader.getBaseAuth());
+    public BaseService authorize(String token) {
+        reqSpec.header(HttpHeaders.AUTHORIZATION, configReader.getBaseAuth(token));
         return this;
     }
 
@@ -61,10 +70,9 @@ public class BaseService {
                 .then();
     }
 
-    public ValidatableResponse putCall(String path, Object body) {
+    public ValidatableResponse putCall(String path) {
         return reqSpec
                 .when()
-                .body(body)
                 .put(path)
                 .then();
     }
@@ -87,7 +95,6 @@ public class BaseService {
         return new ObjectMapper()
                 .findAndRegisterModules()
                 .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .enable(SerializationFeature.INDENT_OUTPUT);
     }
 

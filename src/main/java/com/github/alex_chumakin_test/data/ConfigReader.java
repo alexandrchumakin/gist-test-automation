@@ -28,10 +28,11 @@ public class ConfigReader {
         });
     }
 
-    public String getBaseAuth(){
-        return String.format("Basic %1$s", new String(Base64.encodeBase64(
-                String.format("%1$s:%2$s", getValueByKey("userName"), getValueByKey("password")).getBytes()
-        )));
+    public String getBaseAuth(String token) {
+        String password = PasswordEncryption.decryptPassword(getValueByKey("password"));
+        return String.format("Basic %1$s", Optional.ofNullable(token).orElse(new String(Base64.encodeBase64(
+                String.format("%1$s:%2$s", getValueByKey("userName"), password).getBytes()
+        ))));
     }
 
 }
