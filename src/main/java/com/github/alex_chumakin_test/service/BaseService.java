@@ -1,13 +1,8 @@
 package com.github.alex_chumakin_test.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.alex_chumakin_test.data.ConfigReader;
 import com.github.alex_chumakin_test.service.filters.CustomRequestLoggingFilter;
 import com.github.alex_chumakin_test.service.filters.CustomResponseLoggingFilter;
@@ -21,11 +16,7 @@ import io.restassured.specification.RequestSpecification;
 import lombok.Getter;
 import org.apache.http.HttpHeaders;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
 
 @Getter
 public class BaseService {

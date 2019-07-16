@@ -2,7 +2,7 @@ package com.github.alex_chumakin_test.data;
 
 public class ContentController {
 
-    private FileType fileType;
+    private final FileType fileType;
 
     public ContentController(FileType fileType) {
         this.fileType = fileType;

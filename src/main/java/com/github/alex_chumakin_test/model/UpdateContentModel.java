@@ -20,7 +20,7 @@ public class UpdateContentModel {
 
     static class JsonStringSerializer extends StdSerializer<String> {
 
-        public JsonStringSerializer() {
+        JsonStringSerializer() {
             super(String.class);
         }
 

@@ -17,9 +17,10 @@ public class GistController {
 
     public static final String RATE_LIMIT_HEADER = "X-RateLimit-Limit";
     public static final String RATE_REMAINING_LIMIT_HEADER = "X-RateLimit-Remaining";
+    public static final String RATE_LIMIT_RESET_HEADER = "X-RateLimit-Reset";
 
     public GistRequestModel generateRequest(List<FileType> types) {
-        Map<Object, ContentModel> files = new HashMap<>();
+        Map<String, ContentModel> files = new HashMap<>();
         Optional.ofNullable(types).orElse(Collections.singletonList(FileType.PYTHON)).forEach(x -> {
             var controller = new ContentController(x);
             files.put(controller.getFileName(), ContentModel.builder().content(controller.getContent()).build());
@@ -33,10 +34,10 @@ public class GistController {
     }
 
     public GistUpdateModel updateGist(List<FileType> types, String description) {
-        Map<Object, UpdateContentModel> files = null;
+        Map<String, Object> files = null;
 
         if (types != null) {
-            Map<Object, UpdateContentModel> updateFiles = new HashMap<>();
+            Map<String, Object> updateFiles = new HashMap<>();
             types.forEach(x -> {
                 var controller = new ContentController(x);
                 updateFiles.put(controller.getFileName(),
@@ -54,13 +55,8 @@ public class GistController {
 
     public GistUpdateModel updateGistWithRemovingFile(FileType fileType) {
         var controller = new ContentController(fileType);
-        var files = new HashMap<Object, UpdateContentModel>() {{
-            put(controller.getFileName(),
-                UpdateContentModel
-                        .builder()
-                        .content(controller.getContent())
-                        .filename("null")
-                        .build());
+        var files = new HashMap<String, Object>() {{
+            put(controller.getFileName(), null);
         }};
 
         return GistUpdateModel

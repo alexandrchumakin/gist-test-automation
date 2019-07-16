@@ -3,7 +3,6 @@ package com.github.alex_chumakin_test;
 import com.github.alex_chumakin_test.data.ContentController;
 import com.github.alex_chumakin_test.data.FileType;
 import com.github.alex_chumakin_test.gist.GistController;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UpdateGistTest extends AbstractTest {
 
@@ -47,8 +45,6 @@ class UpdateGistTest extends AbstractTest {
         );
     }
 
-    @Test
-    @Disabled
     /*
     Sent a problem description to GitHub support:
     based on the documentation https://developer.github.com/v3/gists/#edit-a-gist
@@ -56,7 +52,13 @@ class UpdateGistTest extends AbstractTest {
 
     but when passing `"filename": null` it returns 422 error:
         "Invalid request.\n\nFor 'properties/filename', nil is not a string."
+
+    actually, to remove some file we need to pass appropriate file value as null:
+        `{"files" : {"hello_world.py":null}}`
+
+    Developers from GitHub promised to update documentation soon.
      */
+    @Test
     void removeGistFile() {
         var createdGist = gistClient.createGistWithToken(null);
         createdGists.add(createdGist.getId());
@@ -65,7 +67,7 @@ class UpdateGistTest extends AbstractTest {
         var updateResponse = gistClient.updateGist(createdGist.getId(), updateGistRequest);
 
         assertAll(
-                () -> assertNull(updateResponse.getFiles()),
+                () -> assertEquals("{}", updateResponse.getFiles().toString()),
                 () -> assertEquals(createdGist.getDescription(), updateResponse.getDescription())
         );
     }

@@ -13,6 +13,6 @@ public class GistRequestModel {
     private String description;
     @JsonProperty("public")
     private Boolean isPublic;
-    private Map<Object, ContentModel> files;
+    private Map<String, ContentModel> files;
 
 }
